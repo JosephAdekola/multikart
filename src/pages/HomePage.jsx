@@ -1,6 +1,6 @@
 import React from 'react'
 import HeroComponent from '../components/HeroComponent'
-import menDiscountImg from '../assets/images/discountImages/menDiscount.jpg'
+import menDiscountImg from '../assets/images/discountImages/mendiscount.jpg'
 import womenDiscountImg from '../assets/images/discountImages/womenDiscount.jpg'
 import TopCollections from '../components/TopCollections'
 

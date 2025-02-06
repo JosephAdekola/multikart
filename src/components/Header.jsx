@@ -1,5 +1,5 @@
 import React from 'react'
-import headerLogo from '../assets/images/headerImages/headerLogo.png'
+import headerLogo from '../assets/images/headerImages/headerlogo.png'
 import { setStaticBarOn } from '../atoms/staticDropDownAtoms/StaticDropDownStateAtom'
 import { setResponsiveMenuOn } from '../atoms/responsiveMenuAtom/ResponsiveMenuAtom'
 import { HeaderAtom,HeaderSubMenuState} from '../atoms/headerAtom/HeaderAtom'

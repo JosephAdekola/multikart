@@ -21,7 +21,7 @@ export default function Collections() {
     ]
 
     const [collectionIndex, setCollectionIndex] = useState(0)
-    const [ResponsiveCollectionIndex, setResponsiveCollectionIndex] = useState(100)
+    const [ResponsiveCollectionIndex, setResponsiveCollectionIndex] = useState(0)
     const [staticSlide, setStaticSlide] = useState(false)
 
     useEffect(() => {

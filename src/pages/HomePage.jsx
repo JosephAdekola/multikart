@@ -8,6 +8,8 @@ import topProductBg from '../assets/images/topProductBgImage/1.jpg'
 import SpecialProducts from '../components/SpecialProducts'
 import SideOffers from '../components/sideOffersFolder/SideOffers'
 import Collections from '../components/collectionsFolder/Collections'
+import InstagramPosts from '../components/InstagramPosts'
+import LogosPanel from '../components/LogosPanel'
 
 
 
@@ -62,6 +64,12 @@ export default function HomePage() {
             </div>
             <div className=' max-w-[1400px] mx-auto px-2 '>
                 <Collections />
+            </div>
+            <div className=' max-w-[100%] mx-auto px-0 '>
+                <InstagramPosts />
+            </div>
+            <div className=' max-w-[1400px] mx-auto px-2 '>
+                <LogosPanel />
             </div>
         </div>
     )

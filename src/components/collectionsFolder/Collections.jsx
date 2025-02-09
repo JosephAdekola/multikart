@@ -48,7 +48,7 @@ export default function Collections() {
         <div>
             <div className=' my-10 pt-10 '>
                 <p className=' text-[#ff010a] text-center '>
-                    Exclusiv Products
+                    Our Collection
                 </p>
                 <h2 className=' text-4xl font-semibold text-center '>
                     Special Products

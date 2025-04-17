@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import HeroComponent from '../components/HeroComponent'
 import menDiscountImg from '../assets/images/discountImages/mendiscount.jpg'
 import womenDiscountImg from '../assets/images/discountImages/womenDiscount.jpg'
@@ -10,10 +10,12 @@ import SideOffers from '../components/sideOffersFolder/SideOffers'
 import Collections from '../components/collectionsFolder/Collections'
 import InstagramPosts from '../components/InstagramPosts'
 import LogosPanel from '../components/LogosPanel'
+import { AllData } from '../utils/data/mockData'
 
 
 
-export default function HomePage() {
+export default function HomePage() {   
+        
     return (
         <div className=' w-full min-h-[85vh] bg-white '>
             <div>

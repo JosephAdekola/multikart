@@ -11,11 +11,40 @@ import Collections from '../components/collectionsFolder/Collections'
 import InstagramPosts from '../components/InstagramPosts'
 import LogosPanel from '../components/LogosPanel'
 import { AllData } from '../utils/data/mockData'
+import axios from 'axios'
 
 
 
-export default function HomePage() {   
-        
+export default function HomePage() {
+
+    console.log("hello");
+    
+
+    // const parsedStorage = JSON.parse(localStorage.getItem("recoil-persist"))
+    // const token = parsedStorage.authAtom.token
+
+    // // console.log(token);
+
+
+    // const customerCart = async () => {
+    //     try {
+    //         const res = await axios.get("http://localhost:7077/api/v1/cart/get-my-cart", {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         });
+
+    //         console.log("Cart Data:", res.data); // Log just the useful data
+    //     } catch (error) {
+    //         console.error("Error fetching cart:", error.response?.data || error.message);
+    //     }
+    // };
+
+
+    // useEffect(() => {
+    //     customerCart()
+    // }, [])
+
     return (
         <div className=' w-full min-h-[85vh] bg-white '>
             <div>

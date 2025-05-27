@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { HeroImages, HeroImageIndex, HeroAutoNavigate } from '../atoms/heroAtom/HeroAtoms'
 import { useRecoilState, useRecoilValue } from 'recoil';
+import Button from './tools/Button';
 
 export default function HeroComponent() {
 
@@ -58,12 +59,7 @@ export default function HeroComponent() {
                       <h1 className=' text-4xl lg:text-6xl font-semibold '>
                         MEN FASHION
                       </h1>
-                      <button className=' bg-[#ff4c3b] border-[2px] border-[#ff4c3b] font-bold
-                          hover:bg-white hover:border-[#ff4c3b] text-white w-[150px] 
-                          mx-auto mt-3 px-6 py-2 hover:text-black transition-all duration-300
-                          ease-[cubic-bezier(0.455, 0.03, 0.515, 0.955)] '>
-                        SHOP NOW
-                      </button>
+                      <Button buttonText={"shop now"} width={"fit"} horiMargin={"auto"} />
                       
                     </div>
                     <div className={` transition-all duration-700 ease-linear w-[350px] lg:w-[800px] pl-5
@@ -77,12 +73,7 @@ export default function HeroComponent() {
                       <h1 className=' text-4xl lg:text-6xl font-semibold '>
                         WOMEN FASHION
                       </h1>
-                      <button className=' bg-[#ff4c3b] border-[2px] border-[#ff4c3b] font-bold
-                          hover:bg-white hover:border-[#ff4c3b] text-white w-[150px] 
-                          mx-auto mt-3 px-6 py-2 hover:text-black transition-all duration-300
-                          ease-[cubic-bezier(0.455, 0.03, 0.515, 0.955)] '>
-                        SHOP NOW
-                      </button>
+                      <Button buttonText={"shop now"} width={"fit"} horiMargin={"auto"} />
                     </div>
                   </div>
                 </div>

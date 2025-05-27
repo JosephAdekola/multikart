@@ -4,14 +4,22 @@ import { allProducts } from '../apiCalls/Products'
 import { useNavigate, useParams } from 'react-router-dom'
 import NewProductsCard from '../components/collectionsFolder/NewProductsCard'
 import ProductCard from '../components/ProductCard'
-import { AllCart } from '../apiCalls/CartCall'
-import { cartAtoms, handleAddCart, handleAddCartBuyNow } from '../atoms/cart/CartAtoms'
-import { useRecoilState } from 'recoil'
+// import { AllCart } from '../apiCalls/CartCall'
+import { userCartAtom } from '../atoms/cart/CartAtoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { AllData } from '../utils/data/mockData'
+import Reviews from '../components/Reviews.jsx'
+import Button from '../components/tools/Button.jsx'
+import { authAtom } from '../atoms/auth/authAtoms.js'
+import { postReview } from '../apiCalls/reviewsCall.js'
+import { utilityFuntions } from '../utils/UtilityFunctions.js'
+
 
 export default function ProductsDetails() {
 
     const navigate = useNavigate()
+
+    const {handleAddCart} = utilityFuntions()
 
     const passedId = useParams()
     const productId = passedId.id
@@ -23,7 +31,60 @@ export default function ProductsDetails() {
     const [quantitty, setQuantity] = useState(1)
     const [moreDetails, setMoreDetails] = useState('description')
     const [mobileCol1, setMobileCol1] = useState(false)
-    const [alreadyInCart, setAlreadyInCart] = useRecoilState(cartAtoms)
+
+    const alreadyInCart = useRecoilValue(userCartAtom)
+
+    const [newReview, setNewReview] = useState("")
+    const [rating, setRating] = useState(0)
+    const [star1, setStar1] = useState("gray-300")
+    const [star2, setStar2] = useState("gray-300")
+    const [star3, setStar3] = useState("gray-300")
+    const [star4, setStar4] = useState("gray-300")
+    const [star5, setStar5] = useState("gray-300")
+    const getUser = useRecoilValue(authAtom)
+    const user = getUser.user
+    
+
+    const reviewAdder = async (e)=>{
+        e.preventDefault()      
+
+        const payload = {
+                userId:user._id,
+                productId: product._id,
+                rating: rating,
+                comment: newReview
+            }
+        if (!user._id) {
+            alert("you have to be a registered user before you can post review")
+        }
+        try {            
+            const res = await postReview(payload)
+            if (res) {
+                alert(res.data.message)
+                setNewReview("")
+                setRating(0)
+                setStar1("gray-300")
+                setStar2("gray-300")
+                setStar3("gray-300")
+                setStar4("gray-300")
+                setStar5("gray-300")
+            }
+        } catch (error) {
+            if (error.response) {
+                console.log(error.response.data.message);
+                alert(error.response.data.message)
+                return;
+            }
+            if (error.message) {
+                console.log("axios error", error);
+                return
+            }
+            if (error.request) {
+                console.log(error);
+
+            }
+        }
+    }
 
 
     const sellingPoints = [
@@ -53,57 +114,43 @@ export default function ProductsDetails() {
 
     useEffect(() => {
         const fetchProduct = async () => {
-            setProduct(AllData.products[productId - 1])
-            // try {
-            //     const res = await singleProduct(productId)
-            //     setProduct(res?.data)
-            // } catch (error) {
-            //     console.error('unable to get product from the api call', error);
-            //     throw error
-            // }
+            // setProduct(AllData.products[productId - 1])
+            try {
+                const res = await singleProduct(productId)
+                setProduct(res?.data)
+            } catch (error) {
+                console.error('unable to get product from the api call', error);
+                throw error
+            }
         };
 
         const fetchAllProducts = async () => {
-            setEveryProduct(AllData.products)
-            // try {
-            //     const res = await allProducts()
-            //     setEveryProduct(res?.data)
-            // } catch (error) {
-            //     console.error(`unable to fetch all products from api call`, error);
-            //     throw error
-            // }
+            // setEveryProduct(AllData.products)
+            try {
+                const res = await allProducts()
+                setEveryProduct(res?.data)
+            } catch (error) {
+                console.error(`unable to fetch all products from api call`, error);
+                throw error
+            }
         };
-
-        const allCartItems = () => {
-            setAlreadyInCart(AllData.cart)
-            // try {
-            //     const res = await AllCart()
-            //     setAlreadyInCart(res?.data)
-            // } catch (error) {
-            //     console.error(`unable to fetch all carts from api call`, error);
-            //     throw error                
-            // }
-        }
 
         fetchProduct();
         fetchAllProducts();
-        allCartItems()
 
     }, [productId])
     
 
 
-
-
     return (
         <div className=' min-h-[70vh] w-full '>
             <div className={`col1 w-[80%] h-[85vh] px-2 overflow-y-scroll flex md:hidden flex-col gap-5 bg-white ${!mobileCol1 ? 'hidden' : 'absolute'}`}>
-                    <div className=' flex gap-2 px-5 cursor-pointer mt-3 '
-                        onClick={() => setMobileCol1(false)}>
-                        <i className=' pi pi-angle-left my-auto text-sm '></i>
-                        <h2 className=' '>BACK</h2>
-                    </div>
-                    <hr className=' text-gray-300 ' />
+                <div className=' flex gap-2 px-5 cursor-pointer mt-3 '
+                    onClick={() => setMobileCol1(false)}>
+                    <i className=' pi pi-angle-left my-auto text-sm '></i>
+                    <h2 className=' '>BACK</h2>
+                </div>
+                <hr className=' text-gray-300 ' />
                 <div className='  p-7 '>
                     <div className=' flex justify-between '>
                         <h2 className=' font-bold '>BRAND</h2>
@@ -271,14 +318,8 @@ export default function ProductsDetails() {
                                     </div>
 
                                     <div className=' flex justify-center md:justify-start gap-3 py-5 '>
-                                        <button className=' text-white text-sm font-bold bg-[#ff4c3b] px-8 py-2 hover:bg-white hover:text-black border border-[#ff4c3b] '
-                                                onClick={()=>handleAddCart(product.images[0], product.title,  product.price, quantitty, alreadyInCart, setAlreadyInCart  )} >
-                                            ADD TO CART
-                                        </button>
-                                        <button className=' text-white text-sm font-bold bg-[#ff4c3b] px-8 py-2 hover:bg-white hover:text-black border border-[#ff4c3b] '
-                                                onClick={()=>handleAddCartBuyNow(product.images[0], product.title,  product.price, quantitty, alreadyInCart, setAlreadyInCart, navigate)} >
-                                            BUY NOW
-                                        </button>
+                                        <Button buttonText={"add to cart"} performFunction={()=>handleAddCart(product._id, product.title, alreadyInCart, user )} />                                        
+                                        <Button buttonText={"buy now"} performFunction={()=>{handleAddCart(product._id, product.title, alreadyInCart, user ); navigate("/checkout")}} />                                        
                                     </div>
 
                                     <hr className=' text-gray-300 ' />
@@ -332,7 +373,7 @@ export default function ProductsDetails() {
                                     <li onClick={() => setMoreDetails('description')} className={`cursor-pointer border-b px-3 py-3 border-gray-300 ${moreDetails == 'description' && ('text-[#ff4c3b] border-b-[#ff4c3b]')}`}>DESCRIPTION</li>
                                     <li onClick={() => setMoreDetails('details')} className={`cursor-pointer border-b px-3 py-3 border-gray-300 ${moreDetails == 'details' && ('text-[#ff4c3b] border-b-[#ff4c3b]')}`}>DETAILS</li>
                                     <li onClick={() => setMoreDetails('video')} className={`cursor-pointer border-b px-3 py-3 border-gray-300 ${moreDetails == 'video' && ('text-[#ff4c3b] border-b-[#ff4c3b]')}`}>VIDEO</li>
-                                    <li onClick={() => setMoreDetails('write')} className={`cursor-pointer border-b px-3 py-3 border-gray-300 ${moreDetails == 'write' && ('text-[#ff4c3b] border-b-[#ff4c3b]')}`}>WRITE REVIEW</li>
+                                    <li onClick={() => setMoreDetails('review')} className={`cursor-pointer border-b px-3 py-3 border-gray-300 ${moreDetails == 'review' && ('text-[#ff4c3b] border-b-[#ff4c3b]')}`}>PRODUCT REVIEWS</li>
                                 </ul>
                             </div>
 
@@ -349,8 +390,58 @@ export default function ProductsDetails() {
                                     <p>{product.Video}</p>
                                 </div>
 
-                                <div className={` px-10 ${moreDetails !== 'write' ? 'hidden' : 'block'}`}>
-                                    <p>{product.writeReview}</p>
+                                <div className={` px-10 ${moreDetails !== 'review' ? 'hidden' : 'block'}`}>
+                                    <div>
+                                        <p>
+                                            <Reviews productId={product._id} />
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <form action="" className=' flex flex-col gap-2 '>
+                                            <input type="text" placeholder='what do you think about this product?'
+                                                className=' border w-full px-3 py-2 rounded ' value={newReview}
+                                                onChange={e=>setNewReview(e.target.value)} />
+                                            <div className=' flex gap-2 '>
+                                                <p> Rating: </p>
+                                                <i className={`my-auto pi pi-star-fill text-${star1}`} onClick={()=>{setStar1("yellow-500");
+                                                                                                            setStar2("gray-300")
+                                                                                                            setStar3("gray-300")
+                                                                                                            setStar4("gray-300")
+                                                                                                            setStar5("gray-300")
+                                                                                                            setRating(1)}}>
+                                                </i>
+                                                <i className={`my-auto pi pi-star-fill text-${star2}`} onClick={()=>{setStar1("yellow-500");
+                                                                                                            setStar2("yellow-500")
+                                                                                                            setStar3("gray-300")
+                                                                                                            setStar4("gray-300")
+                                                                                                            setStar5("gray-300")
+                                                                                                            setRating(2)}}>
+                                                </i>
+                                                <i className={`my-auto pi pi-star-fill text-${star3}`} onClick={()=>{setStar1("yellow-500");
+                                                                                                            setStar2("yellow-500")
+                                                                                                            setStar3("yellow-500")
+                                                                                                            setStar4("gray-300")
+                                                                                                            setStar5("gray-300")
+                                                                                                            setRating(3)}}>
+                                                </i>
+                                                <i className={`my-auto pi pi-star-fill text-${star4}`} onClick={()=>{setStar1("yellow-500");
+                                                                                                            setStar2("yellow-500")
+                                                                                                            setStar3("yellow-500")
+                                                                                                            setStar4("yellow-500")
+                                                                                                            setStar5("gray-300")
+                                                                                                            setRating(4)}}>
+                                                </i>
+                                                <i className={`my-auto pi pi-star-fill text-${star5}`} onClick={()=>{setStar1("yellow-500");
+                                                                                                            setStar2("yellow-500")
+                                                                                                            setStar3("yellow-500")
+                                                                                                            setStar4("yellow-500")
+                                                                                                            setStar5("yellow-500")
+                                                                                                            setRating(5)}}>
+                                                </i>
+                                            </div>
+                                            <Button buttonText={"submit"} width={"fit"} leftMargin={"auto"} performFunction={reviewAdder} />
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -363,11 +454,11 @@ export default function ProductsDetails() {
                     <div className=' md:grid md:grid-cols-3 lg:grid-cols-6 gap-5 '>
                         {
                             everyProduct.map((prod, index) => {
-                                const display = index < 6
+                                const display = prod.title != product.title
                                 return (
                                     <div key={index}
                                         className={`${!display && ('hidden')}`}>
-                                        <ProductCard smallImages={prod.images} name={prod.title} prodId={prod.id} price={prod.price} strike={prod.old_price } alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
+                                        <ProductCard smallImages={prod.images} name={prod.title} prodId={prod.productCode} price={prod.price} strike={prod.old_price} alreadyInCart={1} setAlreadyInCart={1} />
                                     </div>
                                 )
                             })

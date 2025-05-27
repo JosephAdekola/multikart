@@ -1,101 +1,100 @@
-import { atom, selector } from "recoil";
-import { AddToCart, AllCart } from "../../apiCalls/CartCall";
 import { toast } from "react-toastify";
 import { AllData } from "../../utils/data/mockData";
+import { AddToCart, customerCart } from "../../apiCalls/CartCall";
+import { recoilPersist } from "recoil-persist";
+import { atom, selector, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { authAtom } from "../auth/authAtoms";
+import { useEffect } from "react";
 
 
-export const cartAtoms = atom({
-    key: 'cartAtoms',
-    default: [ ]
-})
+const { persistAtom } = recoilPersist({
+    key: "myCart",
+    storage: localStorage
+});
 
-export const numberOfCart = selector({
-    key: 'numberOfCart',
-    get: ({get}) => {
-        const cart = get(cartAtoms)
-        const lenght = cart.length
-        return lenght
-    }
-})
+export const userCartAtom = atom({
+    key: "userCartAtom",
+    default: [],
+    effects_UNSTABLE: [persistAtom]
+});
 
-export const fetchCart = (setCart) =>{
+export const cartTotal = selector({
+    key: "cartTotal",
+    get: ({ get }) => {
+        const cartItems = get(userCartAtom);
+        return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    },
+});
 
-    setCart(AllData.cart)
-    // try {
-    //     const res = await AllCart()
-    // setCart(res.data)
-    // } catch (error) {
-    //     console.error('could not get all cart from call into the fetchCart in the cartAtoms file', error);
-        
-    // }
-}
+export const cartnumber = selector({
+    key: "cartnumber",
+    get: ({ get }) => {
+        const cartItems = get(userCartAtom);
+        return cartItems.length;
+    },
+});
 
-// export const handleAddCart = async (i, t, p, q, alreadyInCart, setAlreadyInCart) =>{
-//         const checkIndex = alreadyInCart.findIndex((cart)=>cart.productNmae == t);
-//         const payload = {
-//             image: i,
-//             productNmae: t,
-//             price: p,
-//             quantity: q
-//         }
 
-//         if (checkIndex == -1) {
-//             const res = await AddToCart(payload)
-            
-//             res && (toast.success('item added to cart successfully'))
-            
-//         } else {
-//             toast.error('you already have this item in your cart')
-//         }
-//         fetchCart(setAlreadyInCart)
-        
+
+export function useSyncCart() {
+    const setCart = useSetRecoilState(userCartAtom);
+    const auth = useRecoilValue(authAtom);
+
+    useEffect(() => {
+        async function loadCart() {
+            if (!auth?.token) return;
+            const cartData = await customerCart(auth.token);
+            setCart(cartData.data);
+        }
+        loadCart();
+    }, [auth, setCart]);}
+
+
+// export const handleAddCart = async (i, t, p, q, alreadyInCart, setAlreadyInCart) => {
+//     const checkIndex = alreadyInCart.findIndex((cart) => cart.productNmae == t);
+//     const payload = {
+//         image: i,
+//         productNmae: t,
+//         price: p,
+//         quantity: q
 //     }
 
-export const handleAddCart = async (i, t, p, q, alreadyInCart, setAlreadyInCart) =>{
-    const checkIndex = alreadyInCart.findIndex((cart)=>cart.productNmae == t);
-    const payload = {
-        image: i,
-        productNmae: t,
-        price: p,
-        quantity: q
-    }
+//     if (checkIndex == -1) {
+//         // const res = await AddToCart(payload)
 
-    if (checkIndex == -1) {
-        // const res = await AddToCart(payload)
+//         const updatedCart = [...alreadyInCart, payload];
+//         setAlreadyInCart(updatedCart);
 
-        const updatedCart = [...alreadyInCart, payload];
-        setAlreadyInCart(updatedCart);
-        
-        // res && (toast.success('item added to cart successfully'))
+//         // res && (toast.success('item added to cart successfully'))
 
-        toast.success('item added to cart successfully')
-        
-    } else {
-        toast.error('you already have this item in your cart')
-    }
-    fetchCart(setAlreadyInCart)
-    
-}
+//         toast.success('item added to cart successfully')
 
-export const handleAddCartBuyNow = async (i, t, p, q, alreadyInCart, setAlreadyInCart, navigate) =>{
-    const checkIndex = alreadyInCart.findIndex((cart)=>cart.productNmae == t);
-    const payload = {
-        image: i,
-        productNmae: t,
-        price: p,
-        quantity: q
-    }
+//     } else {
+//         toast.error('you already have this item in your cart')
+//     }
+//     fetchCart(setAlreadyInCart)
 
-    if (checkIndex == -1) {
-        // const res = await AddToCart(payload)
+// }
 
-        const updatedCart = [...alreadyInCart, payload];
-        setAlreadyInCart(updatedCart);       
-        
-    }
+// export const handleAddCartBuyNow = async (i, t, p, q, alreadyInCart, setAlreadyInCart, navigate) => {
+//     const checkIndex = alreadyInCart.findIndex((cart) => cart.productNmae == t);
+//     const payload = {
+//         image: i,
+//         productNmae: t,
+//         price: p,
+//         quantity: q
+//     }
 
-    navigate("/checkout")
+//     if (checkIndex == -1) {
+//         // const res = await AddToCart(payload)
 
-    fetchCart(setAlreadyInCart)
-    
-}
+//         const updatedCart = [...alreadyInCart, payload];
+//         setAlreadyInCart(updatedCart);
+
+//     }
+
+//     navigate("/checkout")
+
+//     fetchCart(setAlreadyInCart)
+
+// }

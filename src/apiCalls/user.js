@@ -1,0 +1,33 @@
+import axios from "axios";
+
+const baseURL = "https://multikart-api-v1.onrender.com/api/v1/users"
+
+export const getToken = (payload) =>{
+    const response = axios.post(`${baseURL}/sign-in`, payload);
+    return response
+} 
+
+export const signup = (payload) =>{
+    const response = axios.post(`${baseURL}/register`, payload);
+    return response
+} 
+
+export const verifyOtp = (payload) =>{
+    const response = axios.post(`${baseURL}/verify-otp`, payload);
+    return response
+} 
+
+export const getNewOtp = (payload) =>{
+    const response = axios.post(`${baseURL}/resend-otp`, payload);
+    return response
+} 
+
+export const passwordReset = (payload) =>{
+    const response = axios.post(`${baseURL}/reset-password`, payload);
+    return response
+} 
+
+export const newPwSetter = (payload) =>{
+    const response = axios.post(`${baseURL}/set-new-password`, payload);
+    return response
+} 

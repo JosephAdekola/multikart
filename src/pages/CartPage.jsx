@@ -1,67 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { cartAtoms, fetchCart } from '../atoms/cart/CartAtoms'
-import { useRecoilState } from 'recoil'
-import { AllCart, DeleteCartIteem, EditCart } from '../apiCalls/CartCall'
-import { toast } from 'react-toastify'
+import { useRecoilValue } from 'recoil'
+import Button from '../components/tools/Button'
+import { cartTotal, userCartAtom } from '../atoms/cart/CartAtoms'
+import { authAtom } from '../atoms/auth/authAtoms'
+import { utilityFuntions } from '../utils/UtilityFunctions'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+
+
 export default function CartPage() {
+    const {RemoveCartItemHandler, handleQuantityChange} = utilityFuntions()
+
+    const cartDetails = useRecoilValue(userCartAtom)
 
     const navigate = useNavigate()
 
-    const [cartDetails, setCartDetails] = useRecoilState(cartAtoms)
-    const [totalPrice, setTotalPrice] = useState(0)
+    const [cartQuantity, setCartQuantity] = useState(cartDetails.map(item=>item.quantity))
+    
+    
+    
 
-    const RemoveCartItemHandler = (id) => {
-        const deleteId = id
+    const totalPrice = useRecoilValue(cartTotal)
 
-        const fetchToBeDeleted = async () => {
-            try {
-                const res = await DeleteCartIteem(deleteId)
-                fetchCart(setCartDetails);
-                res && (toast.info('item successfully removed from cart'));
-
-            } catch (error) {
-                console.error('error deleting cart', error)
-            }
-        };
-
-        fetchToBeDeleted();
-        // window.location.reload();
-
-    }
-
-    const handleQuantityChange = (id, i, n, p, event) => {
-        const editId = id
-        const noNegative = event.target.value > 0
-
-        const payLoad = {
-            id: id,
-            image: i,
-            productNmae: n,
-            price: p,
-            quantity: noNegative ? Number(event.target.value) : ''
-        }
-
-        const fetchToBeEdited = async () => {
-            try {
-                await EditCart(editId, payLoad)
-                fetchCart(setCartDetails)
-            } catch (error) {
-
-            }
-        };
-        fetchToBeEdited()
-    }
-
-    useEffect(() => {
-        const total = cartDetails.reduce((acc, cart) => acc + (cart.price * cart.quantity), 0);
-        setTotalPrice(total);
-    }, [cartDetails])
-
-    // console.log(cartDetails);   
-
-    return (
+    const auth = useRecoilValue(authAtom)
+            const user = auth.user
+            
+return (
         <div className=' w-full '>
             <div className=' max-w-[1400px] mx-auto py-15 '>
                 <table className=' w-full '>
@@ -81,19 +45,19 @@ export default function CartPage() {
                                 return (
                                     <tr key={index}>
                                         <td className=' py-2 text-center border-y border-gray-300 '>
-                                            <img src={cart.image} alt="" className='w-10 mx-auto ' />
+                                            <img src={cart.images[0]} alt="" className='w-10 mx-auto ' />
                                         </td>
                                         <td className=' py-2 text-center border-y border-gray-300 '>
-                                            {cart.productNmae}
+                                            {cart.title}
                                         </td>
                                         <td className=' py-2 text-center border-y border-gray-300 '>
                                             ${cart.price}
                                         </td>
                                         <td className=' py-2 text-center border-y border-gray-300 '>
-                                            <input type="number" value={cart.quantity} className=' border border-gray-300 w-10 text-center ' onChange={(event) => handleQuantityChange(cart.id, cart.image, cart.productNmae, cart.price, event)} />
+                                            <input type="number" value={cartQuantity[index]} className=' border border-gray-300 w-10 text-center ' onChange={(event) => handleQuantityChange(event, setCartQuantity, index, cart.productId, user)} />
                                         </td>
                                         <td className=' py-2 text-center border-y border-gray-300 cursor-pointer '
-                                            onClick={() => RemoveCartItemHandler(cart.id)}>
+                                            onClick={() => RemoveCartItemHandler( user._id,cart.productId)}>
                                             <i className='pi pi-times'></i>
                                         </td>
                                         <td className=' hidden md:table-cell py-2 text-center border-y border-gray-300 '>
@@ -110,13 +74,8 @@ export default function CartPage() {
                     <p className=' text-2xl font-bold '>${(totalPrice).toFixed(2)}</p>
                 </div>
                 <div className=' flex justify-between py-5 pr-15 pl-7 '>
-                    <button className=' text-white bg-[#ff4c3b] text-sm px-3 py-1 font-bold hover:text-black hover:bg-white border border-[#ff4c3b] cursor-pointer '>
-                        CONTINUE SHOPPING
-                    </button>
-                    <button className=' text-white bg-[#ff4c3b] text-sm px-3 py-1 font-bold hover:text-black hover:bg-white border border-[#ff4c3b] cursor-pointer '
-                        onClick={()=>navigate("/checkout")}>
-                        CHECK OUT
-                    </button>
+                    <Button buttonText={"continue shopping"} />
+                    <Button buttonText={"checkout"} performFunction={()=>navigate("/checkout")} />
                 </div>
             </div>
         </div>

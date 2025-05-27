@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import ProductCard from './ProductCard'
 import { allProducts } from '../apiCalls/Products'
-import { cartAtoms } from '../atoms/cart/CartAtoms'
-import { useRecoilState } from 'recoil'
-import { AllData } from '../utils/data/mockData'
+import { useRecoilValue } from 'recoil'
+import { userCartAtom } from '../atoms/cart/CartAtoms'
+import { authAtom } from '../atoms/auth/authAtoms'
+import { utilityFuntions } from '../utils/UtilityFunctions'
 
 export default function SpecialProducts() {
-    const [alreadyInCart, setAlreadyInCart] = useRecoilState(cartAtoms)
+
+    const {handleAddCart} = utilityFuntions()
+
+    const userCart = useRecoilValue(userCartAtom)
     const quantity = 1
 
-    const [apiProduct, setApiProduts] = useState([])
+    const auth = useRecoilValue(authAtom)
+    const user = auth.user
+
+
+    const [product, setProduts] = useState([])
 
     useEffect(() => {
         const allProductArray = async () => {
             try {
                 const res = await allProducts()
-                setApiProduts(res.data)
+                setProduts(res.data)
             } catch (error) {
                 console.error('didnt get products from api call', error);
             }
@@ -41,11 +49,12 @@ export default function SpecialProducts() {
             </div>
             <div className=' grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 lg:gap-16 '>
                 {
-                    AllData.products.map((prods, index) => {
+                    product.map((prods, index) => {
                         return (
                             <div key={index}>
-                                <ProductCard smallImages={prods.images} name={prods.title} price= {prods.price}
-                                        strike={prods.old_price} prodId={prods.id} quantity={quantity} alreadyInCart={alreadyInCart} setAlreadyInCart={setAlreadyInCart} />
+                                <ProductCard smallImages={prods.images} name={prods.title} price={prods.price}
+                                    strike={prods.old_price} prodId={prods.productCode} id={prods.productId}
+                                    quantity={quantity} alreadyInCart={userCart} user={user} performFunction={() => handleAddCart(prods._id, prods.title, userCart, user)} />
                             </div>
                         )
                     })

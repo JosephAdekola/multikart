@@ -12,8 +12,17 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import StaticDropDownMenu from './StaticDropDownMenu';
 import ResponsiveMainMenu from './ResponsiveMainMenu';
+import { useNavigate } from 'react-router-dom';
+import { authAtom } from '../atoms/auth/authAtoms';
+
 
 export default function PreHeader() {
+
+    const getUserDetails = useRecoilValue(authAtom)
+    
+    const auth = getUserDetails.token
+    
+    
 
     const accountDropMenu = useRecoilValue(AccountDropDown)
     const addMyAcountDropDown = useSetRecoilState(addMyAccountDropDown)
@@ -22,6 +31,16 @@ export default function PreHeader() {
 
     // FOR STATIC DROPDOWN
     const staticDropDownState = useRecoilValue(StaticDropDownStateAtom)
+
+    const navigate = useNavigate()
+
+    const logUserOut = (e)=>{
+        e.preventDefault();
+        localStorage.removeItem("recoil-persist")
+        alert("logout successful")
+        navigate("/")
+        window.location.reload()
+    }
 
 
     return (
@@ -59,9 +78,19 @@ export default function PreHeader() {
                                 ${accountDropMenu ? ' translate-x-0 ' : 'translate-y-20 scale-0'}`}
                             onMouseEnter={addMyAcountDropDown}
                             onMouseLeave={removeMyAcountDropDown}>
-                            <li className=' cursor-pointer '>Login</li>
-                            <li className=' cursor-pointer '>Register</li>
-                            <li className=' cursor-pointer '>Logout</li>
+                            <li className={`cursor-pointer ${auth && ("hidden")}`} onClick={()=>navigate("/login")} >Login</li>
+                            <li className={`cursor-pointer ${auth && ("hidden")}`} onClick={()=>navigate("/signup")}>Register</li>
+                            <li className={`cursor-pointer ${!auth && ("hidden")}`}
+                                onClick={e=>logUserOut(e)}>
+                                Logout
+                            </li>
+                            <li className={`cursor-pointer ${!auth && ("hidden")}`} onClick={()=>navigate("/orders")}>
+                                My Orders
+                            </li>
+                            <li className={`cursor-pointer ${!auth && ("hidden")}`}
+                                onClick={()=>navigate("/dashboard")}>
+                                Account Details
+                            </li>
                         </ul>
                     </div>
                 </div>

@@ -11,31 +11,23 @@ import MainLayout from '../layouts/MainLayout'
 import HomePage from '../pages/HomePage'
 import ProductsDetails from '../pages/ProductsDetails'
 import CartPage from '../pages/CartPage'
-import { AllCart } from '../apiCalls/CartCall'
 import { useEffect } from 'react'
-import { cartAtoms, fetchCart } from '../atoms/cart/CartAtoms'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 import CheckOutPage from '../pages/CheckOutPage'
+import Login from '../pages/Login'
+import SignUp from '../pages/SignUp'
+import { authAtom } from '../atoms/auth/authAtoms'
+import Orders from '../pages/Orders'
+import Dashboard from '../pages/Dashboard'
 
 export default function MainRouter() {
 
-  const setAllCartItems = useSetRecoilState(cartAtoms)
+  const authData = localStorage.getItem("recoil-persist")
+  const isLoggedIn = JSON.parse(authData)
+  
 
   useEffect(()=>{
 
-    fetchCart(setAllCartItems);
-
-    // const fetchAllCartItems = async() =>{
-    //   try {
-    //     const res = await AllCart()
-    //   setAllCartItems(res.data)
-    //   } catch (error) {
-    //     console.error("couldn't get cart items from call", error);
-        
-    //   }
-    // }
-
-    // fetchAllCartItems()
+    
 
   }, [])
 
@@ -46,6 +38,10 @@ export default function MainRouter() {
               <Route path=':id' element={ <ProductsDetails /> } />
               <Route path='cart' element={ <CartPage /> } />
               <Route path='checkout' element={<CheckOutPage />} />
+              <Route path='login' element={isLoggedIn === null ? <Login /> : <HomePage />} />
+              <Route path='signup' element={<SignUp />} />
+              <Route path='orders' element={<Orders />} />
+              <Route path='dashboard' element={<Dashboard />} />
             </Route>
         )
     )

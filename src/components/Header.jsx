@@ -6,7 +6,7 @@ import { HeaderAtom,HeaderSubMenuState} from '../atoms/headerAtom/HeaderAtom'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import HeaderSubMenus from './HeaderSubMenus'
 import { NavLink } from 'react-router-dom'
-import { numberOfCart } from '../atoms/cart/CartAtoms'
+import { cartnumber } from '../atoms/cart/CartAtoms'
 
 export default function Header() {
 
@@ -14,11 +14,7 @@ export default function Header() {
     const responsiveMenuOn = useSetRecoilState(setResponsiveMenuOn)
     const headerMenus = useRecoilValue(HeaderAtom)
     const [subMenuState, setSubMenuState] = useRecoilState(HeaderSubMenuState)
-    const cartInd = useRecoilValue(numberOfCart)
-
-
-
-    // console.log(headerMenus);
+    const cartInd = useRecoilValue(cartnumber)
 
 
     return (

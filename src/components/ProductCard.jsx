@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { handleAddCart } from '../atoms/cart/CartAtoms'
+import { NavLink, useNavigate } from 'react-router-dom'
 
-export default function ProductCard({smallImages = [], name, prodId, price, strike, quantity, alreadyInCart, setAlreadyInCart}) {
+export default function ProductCard({smallImages = [], name, prodId, price, strike, performFunction}) {
 
     const [defaultImage, setDefaultImageState] = useState(smallImages[0])
+    const navigate = useNavigate()
 
     return (
         <div>
@@ -13,9 +13,10 @@ export default function ProductCard({smallImages = [], name, prodId, price, stri
                     onMouseEnter={() => setDefaultImageState(smallImages[1])}
                     onMouseLeave={() => setDefaultImageState(smallImages[0])}
                     >
-                    <NavLink to={`/${prodId}`}>
-                        <img src={defaultImage} alt="" />
-                    </NavLink>
+                    {/* <NavLink to={`/${prodId}`}> */}
+                        <img src={defaultImage} alt="" onClick={()=>{navigate(`/${prodId}`); window.location.reload()}} 
+                            className='cursor-pointer' />
+                    {/* </NavLink> */}
                     <div className=' absolute bottom-0 flex flex-col gap-2 '>
                         {
                             smallImages.map((img, ind) => {
@@ -29,10 +30,11 @@ export default function ProductCard({smallImages = [], name, prodId, price, stri
                             })
                         }
                     </div>
-                    <div className=' absolute bottom-5 right-2 hidden group-hover:flex flex-col gap-7 
+                    <div className=' absolute bottom-5 right-2 flex flex-col gap-7 
                                 text-gray-400 '>
                         <i className=' pi pi-cart-arrow-down cursor-pointer hover:text-[#ff4c3b] '
-                            onClick={()=>handleAddCart(smallImages[0], name,  price, quantity, alreadyInCart, setAlreadyInCart )}></i>
+                            onClick={()=>performFunction()}>
+                        </i>
                         <i className=' pi pi-heart-fill cursor-pointer hover:text-[#ff4c3b] '></i>
                         <i className=' pi pi-search cursor-pointer hover:text-[#ff4c3b] '></i>
                         <i className=' pi pi-sync cursor-pointer hover:text-[#ff4c3b] '></i>

@@ -10,7 +10,7 @@ export default function NewProductsCard({prodArray=[], initIndex, finalIndex, pr
                     return (
                         <div className={` flex gap-5 min-w-[100%] py-3 cursor-pointer ${!display && ('hidden')}`}>
                             <div className=' w-[35%] h-fit '>
-                                <NavLink to={`/${prod.id}`}>
+                                <NavLink to={`/${prod.productCode}`}>
                                     <img src={prod.images[0]} alt="" className='  ' />
                                 </NavLink>
                             </div>

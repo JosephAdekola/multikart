@@ -5,6 +5,7 @@ import discover from '../assets/images/paymentProcessors/discover.png'
 import mastercard from '../assets/images/paymentProcessors/mastercard.png'
 import paypal from '../assets/images/paymentProcessors/paypal.png'
 import visa from '../assets/images/paymentProcessors/visa.png'
+import Button from './tools/Button'
 
 export default function Footer() {
 
@@ -60,10 +61,7 @@ export default function Footer() {
             <input type="email" placeholder='Enter your email'
               className=' bg-white h-10 border border-gray-300 p-2
                     w-[350px] rounded ' />
-            <button className=' bg-[#ff4c3b] h-10 text-white px-5 text-sm border border-[#ff4c3b]
-                      hover:bg-white hover:text-black transition-all duration-300 ease-in-out '>
-              SUBSCRIBE
-            </button>
+            <Button buttonText={"subscribe"} />
           </div>
         </div>
         <hr className=' border-gray-300 ' />

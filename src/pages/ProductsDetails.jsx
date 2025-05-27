@@ -12,7 +12,7 @@ import Reviews from '../components/Reviews.jsx'
 import Button from '../components/tools/Button.jsx'
 import { authAtom } from '../atoms/auth/authAtoms.js'
 import { postReview } from '../apiCalls/reviewsCall.js'
-import { utilityFuntions } from '../utils/UtilityFunctions.js'
+import { utilityFuntions } from '../utils/utilityFunctions.js'
 
 
 export default function ProductsDetails() {

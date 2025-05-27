@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil'
 import Button from '../components/tools/Button'
 import { cartTotal, userCartAtom } from '../atoms/cart/CartAtoms'
 import { authAtom } from '../atoms/auth/authAtoms'
-import { utilityFuntions } from '../utils/UtilityFunctions'
+import { utilityFuntions } from '../utils/utilityFunctions'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 

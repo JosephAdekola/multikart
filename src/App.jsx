@@ -5,7 +5,7 @@ import MainRouter from './router/MainRouter'
 import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { userCartAtom } from './atoms/cart/CartAtoms';
-import { utilityFuntions } from './utils/UtilityFunctions';
+import { utilityFuntions } from './utils/utilityFunctions';
 
 
 function App() {

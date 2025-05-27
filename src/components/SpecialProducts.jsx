@@ -4,7 +4,7 @@ import { allProducts } from '../apiCalls/Products'
 import { useRecoilValue } from 'recoil'
 import { userCartAtom } from '../atoms/cart/CartAtoms'
 import { authAtom } from '../atoms/auth/authAtoms'
-import { utilityFuntions } from '../utils/UtilityFunctions'
+import { utilityFuntions } from '../utils/utilityFunctions'
 
 export default function SpecialProducts() {
 

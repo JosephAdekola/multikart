@@ -4,7 +4,7 @@ import ProductCard from './ProductCard'
 import { userCartAtom } from '../atoms/cart/CartAtoms'
 import { useRecoilValue } from 'recoil'
 import { authAtom } from '../atoms/auth/authAtoms'
-import { utilityFuntions } from '../utils/UtilityFunctions'
+import { utilityFuntions } from '../utils/utilityFunctions'
 
 export default function TopCollections() {
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const baseURL = "https://multikart-api-v1.onrender.com/api/v1/reviews/"
+
+const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/reviews`
+// const baseURL = "http://localhost:7077/api/v1/reviews"
 
 export const postReview = async (payload) => {
     try {

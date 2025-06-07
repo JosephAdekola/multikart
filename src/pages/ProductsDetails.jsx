@@ -19,7 +19,7 @@ export default function ProductsDetails() {
 
     const navigate = useNavigate()
 
-    const {handleAddCart} = utilityFuntions()
+    const { handleAddCart } = utilityFuntions()
 
     const passedId = useParams()
     const productId = passedId.id
@@ -43,21 +43,21 @@ export default function ProductsDetails() {
     const [star5, setStar5] = useState("gray-300")
     const getUser = useRecoilValue(authAtom)
     const user = getUser.user
-    
 
-    const reviewAdder = async (e)=>{
-        e.preventDefault()      
+
+    const reviewAdder = async (e) => {
+        e.preventDefault()
 
         const payload = {
-                userId:user._id,
-                productId: product._id,
-                rating: rating,
-                comment: newReview
-            }
+            userId: user._id,
+            productId: product._id,
+            rating: rating,
+            comment: newReview
+        }
         if (!user._id) {
             alert("you have to be a registered user before you can post review")
         }
-        try {            
+        try {
             const res = await postReview(payload)
             if (res) {
                 alert(res.data.message)
@@ -125,10 +125,9 @@ export default function ProductsDetails() {
         };
 
         const fetchAllProducts = async () => {
-            // setEveryProduct(AllData.products)
             try {
                 const res = await allProducts()
-                setEveryProduct(res?.data)
+                setEveryProduct(res?.data.data)
             } catch (error) {
                 console.error(`unable to fetch all products from api call`, error);
                 throw error
@@ -139,7 +138,7 @@ export default function ProductsDetails() {
         fetchAllProducts();
 
     }, [productId])
-    
+
 
 
     return (
@@ -318,8 +317,8 @@ export default function ProductsDetails() {
                                     </div>
 
                                     <div className=' flex justify-center md:justify-start gap-3 py-5 '>
-                                        <Button buttonText={"add to cart"} performFunction={()=>handleAddCart(product._id, product.title, alreadyInCart, user )} />                                        
-                                        <Button buttonText={"buy now"} performFunction={()=>{handleAddCart(product._id, product.title, alreadyInCart, user ); navigate("/checkout")}} />                                        
+                                        <Button buttonText={"add to cart"} performFunction={() => handleAddCart(product._id, product.title, alreadyInCart, user)} />
+                                        <Button buttonText={"buy now"} performFunction={() => { handleAddCart(product._id, product.title, alreadyInCart, user); navigate("/checkout") }} />
                                     </div>
 
                                     <hr className=' text-gray-300 ' />
@@ -400,43 +399,53 @@ export default function ProductsDetails() {
                                         <form action="" className=' flex flex-col gap-2 '>
                                             <input type="text" placeholder='what do you think about this product?'
                                                 className=' border w-full px-3 py-2 rounded ' value={newReview}
-                                                onChange={e=>setNewReview(e.target.value)} />
+                                                onChange={e => setNewReview(e.target.value)} />
                                             <div className=' flex gap-2 '>
                                                 <p> Rating: </p>
-                                                <i className={`my-auto pi pi-star-fill text-${star1}`} onClick={()=>{setStar1("yellow-500");
-                                                                                                            setStar2("gray-300")
-                                                                                                            setStar3("gray-300")
-                                                                                                            setStar4("gray-300")
-                                                                                                            setStar5("gray-300")
-                                                                                                            setRating(1)}}>
+                                                <i className={`my-auto pi pi-star-fill text-${star1}`} onClick={() => {
+                                                    setStar1("yellow-500");
+                                                    setStar2("gray-300")
+                                                    setStar3("gray-300")
+                                                    setStar4("gray-300")
+                                                    setStar5("gray-300")
+                                                    setRating(1)
+                                                }}>
                                                 </i>
-                                                <i className={`my-auto pi pi-star-fill text-${star2}`} onClick={()=>{setStar1("yellow-500");
-                                                                                                            setStar2("yellow-500")
-                                                                                                            setStar3("gray-300")
-                                                                                                            setStar4("gray-300")
-                                                                                                            setStar5("gray-300")
-                                                                                                            setRating(2)}}>
+                                                <i className={`my-auto pi pi-star-fill text-${star2}`} onClick={() => {
+                                                    setStar1("yellow-500");
+                                                    setStar2("yellow-500")
+                                                    setStar3("gray-300")
+                                                    setStar4("gray-300")
+                                                    setStar5("gray-300")
+                                                    setRating(2)
+                                                }}>
                                                 </i>
-                                                <i className={`my-auto pi pi-star-fill text-${star3}`} onClick={()=>{setStar1("yellow-500");
-                                                                                                            setStar2("yellow-500")
-                                                                                                            setStar3("yellow-500")
-                                                                                                            setStar4("gray-300")
-                                                                                                            setStar5("gray-300")
-                                                                                                            setRating(3)}}>
+                                                <i className={`my-auto pi pi-star-fill text-${star3}`} onClick={() => {
+                                                    setStar1("yellow-500");
+                                                    setStar2("yellow-500")
+                                                    setStar3("yellow-500")
+                                                    setStar4("gray-300")
+                                                    setStar5("gray-300")
+                                                    setRating(3)
+                                                }}>
                                                 </i>
-                                                <i className={`my-auto pi pi-star-fill text-${star4}`} onClick={()=>{setStar1("yellow-500");
-                                                                                                            setStar2("yellow-500")
-                                                                                                            setStar3("yellow-500")
-                                                                                                            setStar4("yellow-500")
-                                                                                                            setStar5("gray-300")
-                                                                                                            setRating(4)}}>
+                                                <i className={`my-auto pi pi-star-fill text-${star4}`} onClick={() => {
+                                                    setStar1("yellow-500");
+                                                    setStar2("yellow-500")
+                                                    setStar3("yellow-500")
+                                                    setStar4("yellow-500")
+                                                    setStar5("gray-300")
+                                                    setRating(4)
+                                                }}>
                                                 </i>
-                                                <i className={`my-auto pi pi-star-fill text-${star5}`} onClick={()=>{setStar1("yellow-500");
-                                                                                                            setStar2("yellow-500")
-                                                                                                            setStar3("yellow-500")
-                                                                                                            setStar4("yellow-500")
-                                                                                                            setStar5("yellow-500")
-                                                                                                            setRating(5)}}>
+                                                <i className={`my-auto pi pi-star-fill text-${star5}`} onClick={() => {
+                                                    setStar1("yellow-500");
+                                                    setStar2("yellow-500")
+                                                    setStar3("yellow-500")
+                                                    setStar4("yellow-500")
+                                                    setStar5("yellow-500")
+                                                    setRating(5)
+                                                }}>
                                                 </i>
                                             </div>
                                             <Button buttonText={"submit"} width={"fit"} leftMargin={"auto"} performFunction={reviewAdder} />

@@ -25,7 +25,7 @@ export default function TopCollections() {
     const getAllProducts = async () => {
         try {
             const res = await allProducts()
-            setProducts(res.data)
+            setProducts(res.data.data)
         } catch (error) {
             console.error('could not get products', error);
 

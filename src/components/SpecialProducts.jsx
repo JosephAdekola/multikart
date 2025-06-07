@@ -23,7 +23,7 @@ export default function SpecialProducts() {
         const allProductArray = async () => {
             try {
                 const res = await allProducts()
-                setProduts(res.data)
+                setProduts(res.data.data)
             } catch (error) {
                 console.error('didnt get products from api call', error);
             }

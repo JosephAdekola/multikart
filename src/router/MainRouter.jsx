@@ -1,13 +1,15 @@
-import { createBrowserRouter, 
-          createRoutesFromElements, 
-          Route, 
-          RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider
+} from 'react-router-dom'
 
-  // LAYOUTS
+// LAYOUTS
 import MainLayout from '../layouts/MainLayout'
 
 
-  // PAGES
+// PAGES
 import HomePage from '../pages/HomePage'
 import ProductsDetails from '../pages/ProductsDetails'
 import CartPage from '../pages/CartPage'
@@ -18,38 +20,43 @@ import SignUp from '../pages/SignUp'
 import { authAtom } from '../atoms/auth/authAtoms'
 import Orders from '../pages/Orders'
 import Dashboard from '../pages/Dashboard'
+import Shop from '../pages/Shop'
 
 export default function MainRouter() {
 
   const authData = localStorage.getItem("recoil-persist")
   const isLoggedIn = JSON.parse(authData)
-  
 
-  useEffect(()=>{
 
-    
+  useEffect(() => {
+
+
 
   }, [])
 
-    const myRouter = createBrowserRouter(
-        createRoutesFromElements(
-            <Route path='/' element={<MainLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path=':id' element={ <ProductsDetails /> } />
-              <Route path='cart' element={ <CartPage /> } />
-              <Route path='checkout' element={<CheckOutPage />} />
-              <Route path='login' element={isLoggedIn === null ? <Login /> : <HomePage />} />
-              <Route path='signup' element={<SignUp />} />
-              <Route path='orders' element={<Orders />} />
-              <Route path='dashboard' element={<Dashboard />} />
-            </Route>
-        )
+  const myRouter = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path=':id' element={<ProductsDetails />} />
+        <Route path='cart' element={<CartPage />} />
+        <Route path='checkout' element={<CheckOutPage />} />
+        <Route path='login' element={isLoggedIn === null ? <Login /> : <HomePage />} />
+        <Route path='signup' element={<SignUp />} />
+        <Route path='orders' element={<Orders />} />
+        <Route path='dashboard' element={<Dashboard />} />
+        <Route path='shop'>
+          <Route index element={<Shop />} />
+          <Route path=':category' element={<Shop />} />
+        </Route>
+      </Route>
     )
+  )
 
   return (
     <div>
 
-        <RouterProvider router={myRouter} />
+      <RouterProvider router={myRouter} />
 
     </div>
   )

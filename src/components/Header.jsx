@@ -35,7 +35,7 @@ export default function Header() {
                                 headerMenus.map((m, index) => {
                                     return (
                                         <li key={index}
-                                            className=' relative hover:cursor-pointer hover:text-[#ff4c3b] z-10 '
+                                            className=' relative hover:cursor-pointer text-sm hover:text-[#ff4c3b] z-10 '
                                             onMouseEnter={()=> setSubMenuState(m.menu)}
                                             onMouseLeave={()=> setSubMenuState(null)}>
                                             {m.menu} <i className=' pi pi-angle-down '></i>
@@ -53,15 +53,13 @@ export default function Header() {
                                             )}
                                             {subMenuState === m.menu  && (
                                                 <div className=' absolute '>
-                                                {m.menu === 'SHOP' && (<HeaderSubMenus menu1='Left Sidebar'
-                                                                                    menu2='Right Sidebar'
-                                                                                    menu3='No Sidebar'
-                                                                                    menu4='Sidebar Popup'
-                                                                                    menu5='Metro'
-                                                                                    menu6='Full Width'
-                                                                                    menu7='3 Grid'
-                                                                                    menu8='6 Grid'
-                                                                                    menu9='List View'       />)}
+                                                {m.menu === 'SHOP' && (<HeaderSubMenus menu1='all category'
+                                                                                    menu1LinkText = "all-categories"
+                                                                                    menu2='men wears'
+                                                                                    menu2LinkText = "Men-Wears"
+                                                                                    menu3='ladies wears'
+                                                                                    menu3LinkText = "Ladies-Wear"/>)}
+                                                                                    
                                             </div>
                                             )}
                                             {subMenuState === m.menu  && (

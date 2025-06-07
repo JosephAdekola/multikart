@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/order`
-// const baseURL = "http://localhost:7077/api/v1/order"
+const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/order/`
+// const baseURL = "http://localhost:7077/api/v1/order/"
 
 export const placeOrder = async (payload) => {
     try {

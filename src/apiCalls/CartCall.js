@@ -3,9 +3,9 @@
 import axios from "axios";
 
 
-// const baseURL = "http://localhost:7077/api/v1/cart"
+// const baseURL = "http://localhost:7077/api/v1/cart/"
 
-const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/cart`
+const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/cart/`
 
 export const customerCart = async (payload) => {
     try {

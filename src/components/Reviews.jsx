@@ -30,7 +30,7 @@ export default function Reviews({ productId }) {
         if (productId) {
             getReviews();
         }
-    }, [productId, reviews]);
+    }, [productId]);
 
     if (loading) return <p>Loading reviews...</p>;
 

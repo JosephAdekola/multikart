@@ -1,8 +1,8 @@
 import axios from "axios"
 
 
-// const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/products/`
-const baseURL = "http://localhost:7077/api/v1/products/"
+const baseURL = `${import.meta.env.VITE_APIBASEURL}/api/v1/products/`
+// const baseURL = "http://localhost:7077/api/v1/products/"
 
 export const allProducts = ()=>{
     const response = axios.get(`${baseURL}allproducts`)
